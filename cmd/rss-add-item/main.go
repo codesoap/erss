@@ -130,8 +130,10 @@ func getItem(conf *conf) (item *rss2.Item, err error) {
 	if err = addGUID(item, conf); err != nil {
 		return
 	}
-	if err = addPubDate(item, conf); err != nil {
-		return
+	if len(conf.PubDate) > 0 {
+		if item.PubDate, err = erss.ToRSSTime(conf.PubDate); err != nil {
+			return
+		}
 	}
 	if err = addSource(item, conf); err != nil {
 		return
@@ -165,18 +167,6 @@ func addGUID(item *rss2.Item, conf *conf) (err error) {
 			return
 		}
 		item.GUID.IsPermaLink = conf.GuidIsPermaLink
-	}
-	return
-}
-
-func addPubDate(item *rss2.Item, conf *conf) (err error) {
-	if len(conf.PubDate) > 0 {
-		var date rss2.RSSTime
-		date, err = rss2.ParseRSSTime(conf.PubDate)
-		if err != nil {
-			return
-		}
-		item.PubDate = &date
 	}
 	return
 }

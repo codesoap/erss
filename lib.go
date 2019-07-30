@@ -8,6 +8,11 @@ import (
 	"github.com/codesoap/rss2"
 )
 
+func ToRSSTime(dateString string) (t *rss2.RSSTime, err error) {
+	date, err := rss2.ParseRSSTime(dateString)
+	return &date, err
+}
+
 func PrintOrWriteResult(rss *rss2.RSS, outfile_name string) (err error) {
 	rss_bytes, err := xml.MarshalIndent(rss, ``, "\t")
 	if err != nil {

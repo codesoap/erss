@@ -133,11 +133,16 @@ func addOptionalElements(channel *rss2.Channel, conf *conf) (err error) {
 	if len(conf.WebMaster) > 0 {
 		channel.WebMaster = conf.WebMaster
 	}
-	if err = addPubDate(channel, conf); err != nil {
-		return
+	if len(conf.PubDate) > 0 {
+		if channel.PubDate, err = erss.ToRSSTime(conf.PubDate); err != nil {
+			return
+		}
 	}
-	if err = addLastBuildDate(channel, conf); err != nil {
-		return
+	if len(conf.LastBuildDate) > 0 {
+		channel.LastBuildDate, err = erss.ToRSSTime(conf.LastBuildDate)
+		if err != nil {
+			return
+		}
 	}
 	if err = addCategory(channel, conf); err != nil {
 		return
@@ -168,30 +173,6 @@ func addOptionalElements(channel *rss2.Channel, conf *conf) (err error) {
 	}
 	if err = addSkipDays(channel, conf); err != nil {
 		return
-	}
-	return
-}
-
-func addPubDate(channel *rss2.Channel, conf *conf) (err error) {
-	if len(conf.PubDate) > 0 {
-		var date rss2.RSSTime
-		date, err = rss2.ParseRSSTime(conf.PubDate)
-		if err != nil {
-			return
-		}
-		channel.PubDate = &date
-	}
-	return
-}
-
-func addLastBuildDate(channel *rss2.Channel, conf *conf) (err error) {
-	if len(conf.LastBuildDate) > 0 {
-		var date rss2.RSSTime
-		date, err = rss2.ParseRSSTime(conf.LastBuildDate)
-		if err != nil {
-			return
-		}
-		channel.LastBuildDate = &date
 	}
 	return
 }
