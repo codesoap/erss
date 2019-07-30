@@ -1,12 +1,12 @@
 package main
 
 import (
-	"encoding/xml"
 	"fmt"
 	"os"
 	"strconv"
 	"time"
 
+	"github.com/codesoap/erss"
 	"github.com/codesoap/rss2"
 	"github.com/docopt/docopt-go"
 )
@@ -114,7 +114,7 @@ func main() {
 		os.Exit(3)
 	}
 	rss := rss2.NewRSS(channel)
-	if err = printOrWriteResult(rss, &conf); err != nil {
+	if err = erss.PrintOrWriteResult(rss, conf.Outfile); err != nil {
 		fmt.Fprintln(os.Stderr, `Error when rendering:`, err.Error())
 		os.Exit(4)
 	}
@@ -287,27 +287,6 @@ func addSkipDays(channel *rss2.Channel, conf *conf) (err error) {
 		var skipDays *rss2.SkipDays
 		skipDays = rss2.NewSkipDays(days)
 		channel.SkipDays = skipDays
-	}
-	return
-}
-
-func printOrWriteResult(rss *rss2.RSS, conf *conf) (err error) {
-	rss_bytes, err := xml.MarshalIndent(rss, ``, "\t")
-	if err != nil {
-		return fmt.Errorf("error when rendering rss: %s", err.Error())
-	}
-	if len(conf.Outfile) == 0 {
-		fmt.Print(xml.Header)
-		fmt.Println(string(rss_bytes))
-	} else {
-		var outfile *os.File
-		outfile, err = os.Create(conf.Outfile)
-		if err != nil {
-			return
-		}
-		defer outfile.Close()
-		fmt.Fprint(outfile, xml.Header)
-		fmt.Fprintln(outfile, string(rss_bytes))
 	}
 	return
 }

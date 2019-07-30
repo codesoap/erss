@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"os"
 
+	"github.com/codesoap/erss"
 	"github.com/codesoap/rss2"
 	"github.com/docopt/docopt-go"
 )
@@ -85,7 +86,7 @@ func main() {
 		os.Exit(4)
 	}
 	rss.Channel.Items = append(rss.Channel.Items, item)
-	if err = printOrWriteResult(rss, &conf); err != nil {
+	if err = erss.PrintOrWriteResult(rss, conf.Outfile); err != nil {
 		fmt.Fprintln(os.Stderr, `Error when rendering:`, err.Error())
 		os.Exit(5)
 	}
@@ -183,27 +184,6 @@ func addPubDate(item *rss2.Item, conf *conf) (err error) {
 func addSource(item *rss2.Item, conf *conf) (err error) {
 	if len(conf.Source) > 0 {
 		item.Source, err = rss2.NewSource(conf.Source, conf.SourceUrl)
-	}
-	return
-}
-
-func printOrWriteResult(rss *rss2.RSS, conf *conf) (err error) {
-	rss_bytes, err := xml.MarshalIndent(rss, ``, "\t")
-	if err != nil {
-		return fmt.Errorf(`error when rendering rss: %s`, err.Error())
-	}
-	if len(conf.Outfile) == 0 {
-		fmt.Print(xml.Header)
-		fmt.Println(string(rss_bytes))
-	} else {
-		var outfile *os.File
-		outfile, err = os.Create(conf.Outfile)
-		if err != nil {
-			return
-		}
-		defer outfile.Close()
-		fmt.Fprint(outfile, xml.Header)
-		fmt.Fprintln(outfile, string(rss_bytes))
 	}
 	return
 }
