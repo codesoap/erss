@@ -158,9 +158,7 @@ func addOptionalElements(channel *rss2.Channel, conf *conf) (err error) {
 	if err = addSkipHours(channel, conf); err != nil {
 		return
 	}
-	if err = addSkipDays(channel, conf); err != nil {
-		return
-	}
+	err = addSkipDays(channel, conf)
 	return
 }
 

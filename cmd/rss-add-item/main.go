@@ -132,9 +132,7 @@ func getItem(conf *conf) (item *rss2.Item, err error) {
 			return
 		}
 	}
-	if err = addSource(item, conf); err != nil {
-		return
-	}
+	err = addSource(item, conf)
 	return
 }
 
