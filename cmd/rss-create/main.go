@@ -220,12 +220,12 @@ func addSkipHours(channel *rss2.Channel, conf *conf) (err error) {
 	if len(conf.SkipHour) > 0 {
 		var hours []int
 		for _, hour := range conf.SkipHour {
-			var hour_int int
-			hour_int, err = strconv.Atoi(hour)
+			var hourInt int
+			hourInt, err = strconv.Atoi(hour)
 			if err != nil {
 				return
 			}
-			hours = append(hours, hour_int)
+			hours = append(hours, hourInt)
 		}
 		var skipHours *rss2.SkipHours
 		if skipHours, err = rss2.NewSkipHours(hours); err != nil {
