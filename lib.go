@@ -13,6 +13,14 @@ func ToRSSTime(dateString string) (t *rss2.RSSTime, err error) {
 	return &date, err
 }
 
+func ToCategory(category, categoryDomain string) (c *rss2.Category, err error) {
+	if c, err = rss2.NewCategory(category); err != nil {
+		return
+	}
+	c.Domain = categoryDomain
+	return
+}
+
 func PrintOrWriteResult(rss *rss2.RSS, outfile_name string) (err error) {
 	rss_bytes, err := xml.MarshalIndent(rss, ``, "\t")
 	if err != nil {

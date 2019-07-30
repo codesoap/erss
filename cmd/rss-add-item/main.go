@@ -118,8 +118,11 @@ func getItem(conf *conf) (item *rss2.Item, err error) {
 	if len(conf.Author) > 0 {
 		item.Author = conf.Author
 	}
-	if err = addCategory(item, conf); err != nil {
-		return
+	if len(conf.Category) > 0 {
+		item.Category, err = erss.ToCategory(conf.Category, conf.CategoryDomain)
+		if err != nil {
+			return
+		}
 	}
 	if len(conf.Comments) > 0 {
 		item.Comments = conf.Comments
@@ -137,18 +140,6 @@ func getItem(conf *conf) (item *rss2.Item, err error) {
 	}
 	if err = addSource(item, conf); err != nil {
 		return
-	}
-	return
-}
-
-func addCategory(item *rss2.Item, conf *conf) (err error) {
-	if len(conf.Category) > 0 {
-		if item.Category, err = rss2.NewCategory(conf.Category); err != nil {
-			return
-		}
-		if len(conf.CategoryDomain) > 0 {
-			item.Category.Domain = conf.CategoryDomain
-		}
 	}
 	return
 }

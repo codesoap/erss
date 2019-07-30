@@ -144,8 +144,11 @@ func addOptionalElements(channel *rss2.Channel, conf *conf) (err error) {
 			return
 		}
 	}
-	if err = addCategory(channel, conf); err != nil {
-		return
+	if len(conf.Category) > 0 {
+		channel.Category, err = erss.ToCategory(conf.Category, conf.CategoryDomain)
+		if err != nil {
+			return
+		}
 	}
 	if len(conf.Generator) > 0 {
 		channel.Generator = conf.Generator
@@ -173,18 +176,6 @@ func addOptionalElements(channel *rss2.Channel, conf *conf) (err error) {
 	}
 	if err = addSkipDays(channel, conf); err != nil {
 		return
-	}
-	return
-}
-
-func addCategory(channel *rss2.Channel, conf *conf) (err error) {
-	if len(conf.Category) > 0 {
-		if channel.Category, err = rss2.NewCategory(conf.Category); err != nil {
-			return
-		}
-		if len(conf.CategoryDomain) > 0 {
-			channel.Category.Domain = conf.CategoryDomain
-		}
 	}
 	return
 }
