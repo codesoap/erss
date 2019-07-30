@@ -121,18 +121,10 @@ func main() {
 }
 
 func addOptionalElements(channel *rss2.Channel, conf *conf) (err error) {
-	if len(conf.Language) > 0 {
-		channel.Language = conf.Language
-	}
-	if len(conf.Copyright) > 0 {
-		channel.Copyright = conf.Copyright
-	}
-	if len(conf.ManagingEditor) > 0 {
-		channel.ManagingEditor = conf.ManagingEditor
-	}
-	if len(conf.WebMaster) > 0 {
-		channel.WebMaster = conf.WebMaster
-	}
+	channel.Language = conf.Language
+	channel.Copyright = conf.Copyright
+	channel.ManagingEditor = conf.ManagingEditor
+	channel.WebMaster = conf.WebMaster
 	if len(conf.PubDate) > 0 {
 		if channel.PubDate, err = erss.ToRSSTime(conf.PubDate); err != nil {
 			return
@@ -150,24 +142,16 @@ func addOptionalElements(channel *rss2.Channel, conf *conf) (err error) {
 			return
 		}
 	}
-	if len(conf.Generator) > 0 {
-		channel.Generator = conf.Generator
-	}
-	if len(conf.Docs) > 0 {
-		channel.Docs = conf.Docs
-	}
+	channel.Generator = conf.Generator
+	channel.Docs = conf.Docs
 	if err = addCloud(channel, conf); err != nil {
 		return
 	}
-	if conf.Ttl > 0 {
-		channel.TTL = conf.Ttl
-	}
+	channel.TTL = conf.Ttl
 	if err = addImage(channel, conf); err != nil {
 		return
 	}
-	if len(conf.Rating) > 0 {
-		channel.Rating = conf.Rating
-	}
+	channel.Rating = conf.Rating
 	if err = addTextInput(channel, conf); err != nil {
 		return
 	}

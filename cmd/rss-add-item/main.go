@@ -112,21 +112,15 @@ func getItem(conf *conf) (item *rss2.Item, err error) {
 	if item, err = rss2.NewItem(conf.Title, conf.Description); err != nil {
 		return
 	}
-	if len(conf.Link) > 0 {
-		item.Link = conf.Link
-	}
-	if len(conf.Author) > 0 {
-		item.Author = conf.Author
-	}
+	item.Link = conf.Link
+	item.Author = conf.Author
 	if len(conf.Category) > 0 {
 		item.Category, err = erss.ToCategory(conf.Category, conf.CategoryDomain)
 		if err != nil {
 			return
 		}
 	}
-	if len(conf.Comments) > 0 {
-		item.Comments = conf.Comments
-	}
+	item.Comments = conf.Comments
 	if err = addEnclosure(item, conf); err != nil {
 		return
 	}
