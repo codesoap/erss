@@ -11,6 +11,9 @@ import (
 	"github.com/docopt/docopt-go"
 )
 
+// --category-domain is not optional, when --category is used, to avoid
+// problems when --category is given multiple times. An empty string can
+// be passed to --category-domain, if it's not needed.
 var usage = `
 Add an RSS item to an existing RSS 2.0 file.
 Note that at least --title or --description must be given.
@@ -21,8 +24,8 @@ Usage:
                  [--description=<desc>]
                  [--author=<author>]
                  [(  --category=<category>
-                     [--category-domain=<domain>]
-                 )]
+                     --category-domain=<domain>
+                 )...]
                  [--comments=<comments>]
                  [(  --enclosure-url=<url>
                      --enclosure-length=<length>
@@ -44,8 +47,8 @@ type conf struct {
 	Link            string
 	Description     string
 	Author          string
-	Category        string
-	CategoryDomain  string
+	Category        []string
+	CategoryDomain  []string
 	Comments        string
 	EnclosureUrl    string
 	EnclosureLength int
@@ -114,10 +117,15 @@ func getItem(conf *conf) (item *rss2.Item, err error) {
 	}
 	item.Link = conf.Link
 	item.Author = conf.Author
-	if len(conf.Category) > 0 {
-		item.Category, err = erss.ToCategory(conf.Category, conf.CategoryDomain)
+	for i := 0; i < len(conf.Category); i++ {
+		var category *rss2.Category
+		category, err = erss.ToCategory(conf.Category[i], conf.CategoryDomain[i])
 		if err != nil {
 			return
+		} else if i == 0 {
+			item.Categories = []*rss2.Category{category}
+		} else {
+			item.Categories = append(item.Categories, category)
 		}
 	}
 	item.Comments = conf.Comments
