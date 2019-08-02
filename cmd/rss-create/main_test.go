@@ -21,7 +21,6 @@ func ExampleMain1() {
 }
 
 // (Almost) exhaustive test of the command line arguments.
-// TODO: Insert realistic values (proper links, ...)
 func ExampleMain2() {
 	os.Args = []string{`rss-create`,
 		`--title`, `GoUpstate.com News Headlines`,
