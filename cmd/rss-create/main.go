@@ -11,6 +11,9 @@ import (
 	"github.com/docopt/docopt-go"
 )
 
+// --category-domain is not optional, when --category is used, to avoid
+// problems when --category is given multiple times. An empty string can
+// be passed to --category-domain, if it's not needed.
 var usage = `
 Create an RSS 2.0 file. The file will contain no RSS items.
 
@@ -25,8 +28,8 @@ Usage:
                [--pubDate=<date>]
                [--lastBuildDate=<date>]
                [(  --category=<category>
-                   [--category-domain=<domain>]
-               )]
+                   --category-domain=<domain>
+               )...]
                [--generator=<generator>]
                [--docs=<docs>]
                [(  --cloud-domain=<domain>
@@ -64,8 +67,8 @@ type conf struct {
 	WebMaster              string
 	PubDate                string
 	LastBuildDate          string
-	Category               string
-	CategoryDomain         string
+	Category               []string
+	CategoryDomain         []string
 	Generator              string
 	Docs                   string
 	CloudDomain            string
@@ -136,10 +139,15 @@ func addOptionalElements(channel *rss2.Channel, conf *conf) (err error) {
 			return
 		}
 	}
-	if len(conf.Category) > 0 {
-		channel.Category, err = erss.ToCategory(conf.Category, conf.CategoryDomain)
+	for i := 0; i < len(conf.Category); i++ {
+		var category *rss2.Category
+		category, err = erss.ToCategory(conf.Category[i], conf.CategoryDomain[i])
 		if err != nil {
 			return
+		} else if i == 0 {
+			channel.Categories = []*rss2.Category{category}
+		} else {
+			channel.Categories = append(channel.Categories, category)
 		}
 	}
 	channel.Generator = conf.Generator
