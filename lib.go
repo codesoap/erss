@@ -3,6 +3,7 @@ package erss
 import (
 	"encoding/xml"
 	"fmt"
+	"io/ioutil"
 	"os"
 
 	"github.com/codesoap/rss2"
@@ -40,4 +41,20 @@ func PrintOrWriteResult(rss *rss2.RSS, outfile_name string) (err error) {
 		fmt.Fprintln(outfile, string(rss_bytes))
 	}
 	return
+}
+
+func GetRSS(filename string) (r *rss2.RSS, err error) {
+	var input []byte
+	if len(filename) == 0 {
+		if input, err = ioutil.ReadAll(os.Stdin); err != nil {
+			return
+		}
+	} else {
+		if input, err = ioutil.ReadFile(filename); err != nil {
+			return
+		}
+	}
+	var rss rss2.RSS
+	err = xml.Unmarshal(input, &rss)
+	return &rss, err
 }

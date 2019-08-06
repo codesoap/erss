@@ -1,13 +1,10 @@
 package main
 
 import (
-	"encoding/xml"
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"github.com/codesoap/erss"
-	"github.com/codesoap/rss2"
 	"github.com/docopt/docopt-go"
 )
 
@@ -41,7 +38,7 @@ func main() {
 		fmt.Fprintln(os.Stderr, `Error when using arguments:`, err.Error())
 		os.Exit(2)
 	}
-	rss, err := getRSS(&conf)
+	rss, err := erss.GetRSS(conf.Infile)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, `Error when reading the existing RSS:`, err.Error())
 		os.Exit(3)
@@ -55,21 +52,4 @@ func main() {
 		fmt.Fprintln(os.Stderr, `Error when rendering:`, err.Error())
 		os.Exit(5)
 	}
-}
-
-// TODO: put into lib.go
-func getRSS(conf *conf) (r *rss2.RSS, err error) {
-	var input []byte
-	if len(conf.Infile) == 0 {
-		if input, err = ioutil.ReadAll(os.Stdin); err != nil {
-			return
-		}
-	} else {
-		if input, err = ioutil.ReadFile(conf.Infile); err != nil {
-			return
-		}
-	}
-	var rss rss2.RSS
-	err = xml.Unmarshal(input, &rss)
-	return &rss, err
 }
