@@ -122,7 +122,8 @@ func matchesFilter(item *rss2.Item, conf *conf) (matches bool, err error) {
 			return false, nil
 		}
 	}
-	if !reGUID.Match([]byte(item.GUID.Value)) {
+	if len(conf.Guid) > 0 && (item.GUID == nil ||
+		!reGUID.Match([]byte(item.GUID.Value))) {
 		return false, nil
 	}
 	var date *rss2.RSSTime
@@ -130,7 +131,7 @@ func matchesFilter(item *rss2.Item, conf *conf) (matches bool, err error) {
 		if date, err = erss.ToRSSTime(conf.After); err != nil {
 			return
 		}
-		if !item.PubDate.Time.After(date.Time) {
+		if item.PubDate == nil || !item.PubDate.Time.After(date.Time) {
 			return false, nil
 		}
 	}
@@ -138,7 +139,7 @@ func matchesFilter(item *rss2.Item, conf *conf) (matches bool, err error) {
 		if date, err = erss.ToRSSTime(conf.Before); err != nil {
 			return
 		}
-		if !item.PubDate.Time.Before(date.Time) {
+		if item.PubDate == nil || !item.PubDate.Time.Before(date.Time) {
 			return false, nil
 		}
 	}
