@@ -4,8 +4,8 @@ TODO
 # Usage
 ```console
 $ rss-create --title 'My Blog' --link 'my.blog.net' \
-             --description 'My Blog about programming and cleansing products.' \
-             my_blog.rss
+$            --description 'My Blog about programming and cleansing products.' \
+$            my_blog.rss
 $ cat my_blog.rss
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
@@ -16,7 +16,7 @@ $ cat my_blog.rss
         </channel>
 </rss>
 $ rss-add-item --title "RSS's not dead!" --link 'my.blog.net/articles/1' \
-               --pubDate "$(date '+%d %b %Y %H:%M:%S %z')" my_blog.rss my_updated_blog.rss
+$              --pubDate "$(date '+%d %b %Y %H:%M:%S %z')" my_blog.rss my_updated_blog.rss
 $ cat my_updated_blog.rss
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
@@ -36,8 +36,8 @@ $ mv my_updated_blog.rss my_blog.rss
 $ # I forgot to specify the language of my blog, so let's change that.
 $ # First I need to create a new RSS file, with the complete configuration.
 $ rss-create --title 'My Blog' --link 'my.blog.net' \
-             --description 'My Blog about programming and cleansing products.' \
-             --language 'en-us' my_fixed_blog.rss
+$            --description 'My Blog about programming and cleansing products.' \
+$            --language 'en-us' my_fixed_blog.rss
 $ # Now I can copy over the items from my existing blog.
 $ # Note that my_fixed_blog.rss stays unmodified; the results are
 $ # written to my_fixed_and_populated_blog.rss .
