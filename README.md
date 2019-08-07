@@ -1,6 +1,3 @@
-# Installation
-TODO
-
 # Usage
 ```console
 $ rss-create --title 'My Blog' --link 'my.blog.net' \
@@ -50,6 +47,18 @@ $ # file, to avoid poor performance and problems with some feed
 $ # aggregators. I can simply reduce the amount of items like this:
 $ rss-tail -n 32 my_blog.rss my_shrunk_blog.rss
 ```
+
+# Installation
+1. `mkdir -p "$HOME/go/src/github.com/codesoap/" && cd "$HOME/go/src/github.com/codesoap/"`
+   (adapt if you've set a different `$GOPATH`)
+2. `git clone https://github.com/codesoap/erss.git && cd erss/`
+3. `go get ./...` to install dependencies
+   ([codesoap/rss2](https://github.com/codesoap/rss2) and
+   [docopt/docopt.go](https://github.com/docopt/docopt.go))
+4. `make install` to install erss (if you just want the binaries do
+   `make all`)
+
+To uninstall ytools call `make uninstall`.
 
 # To think about
 - `rss-sort-by-date` (for example to reorder a file after multiple calls
