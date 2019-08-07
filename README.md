@@ -58,7 +58,7 @@ $ rss-tail -n 32 my_blog.rss my_shrunk_blog.rss
 4. `make install` to install erss (if you just want the binaries do
    `make all`)
 
-To uninstall ytools call `make uninstall`.
+To uninstall erss call `make uninstall`.
 
 # To think about
 - `rss-sort-by-date` (for example to reorder a file after multiple calls
