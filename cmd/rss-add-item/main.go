@@ -36,8 +36,7 @@ Usage:
                  [(  --source=<source>
                      --source-url=<url>
                  )]
-                 [<infile>]
-                 [<outfile>]
+                 <file>
 `
 
 type conf struct {
@@ -56,8 +55,7 @@ type conf struct {
 	PubDate         string
 	Source          string
 	SourceUrl       string
-	Infile          string
-	Outfile         string
+	File            string
 }
 
 func main() {
@@ -76,7 +74,7 @@ func main() {
 		fmt.Fprintln(os.Stderr, `At least --title or --description must be provided.`)
 		os.Exit(2)
 	}
-	rss, err := erss.GetRSS(conf.Infile)
+	rss, err := erss.GetRSS(conf.File)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, `Error when reading the existing RSS:`, err.Error())
 		os.Exit(3)
@@ -87,7 +85,7 @@ func main() {
 		os.Exit(4)
 	}
 	rss.Channel.Items = append(rss.Channel.Items, item)
-	if err = erss.PrintOrWriteResult(rss, conf.Outfile); err != nil {
+	if err = erss.WriteResult(rss, conf.File); err != nil {
 		fmt.Fprintln(os.Stderr, `Error when rendering:`, err.Error())
 		os.Exit(5)
 	}

@@ -12,18 +12,15 @@ var usage = `
 Remove all but the last n items form an existing RSS 2.0 file.
 
 Usage:
-    rss-tail [-n=<item_count>]
-             [<infile>]
-             [<outfile>]
+    rss-tail [-n=<item_count>] <file>
 
 Options:
     -n=<item_count>  Amount of items to keep [default: 30]
 `
 
 type conf struct {
-	N       int
-	Infile  string
-	Outfile string
+	N    int
+	File string
 }
 
 func main() {
@@ -38,7 +35,7 @@ func main() {
 		fmt.Fprintln(os.Stderr, `Error when using arguments:`, err.Error())
 		os.Exit(2)
 	}
-	rss, err := erss.GetRSS(conf.Infile)
+	rss, err := erss.GetRSS(conf.File)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, `Error when reading the existing RSS:`, err.Error())
 		os.Exit(3)
@@ -48,7 +45,7 @@ func main() {
 		iStart = 0
 	}
 	rss.Channel.Items = rss.Channel.Items[iStart:]
-	if err = erss.PrintOrWriteResult(rss, conf.Outfile); err != nil {
+	if err = erss.WriteResult(rss, conf.File); err != nil {
 		fmt.Fprintln(os.Stderr, `Error when rendering:`, err.Error())
 		os.Exit(5)
 	}

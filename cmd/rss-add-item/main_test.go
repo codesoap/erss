@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os"
@@ -9,10 +10,9 @@ import (
 // Tests basic functionality.
 func ExampleMain1() {
 	rssDummyFile := getRSSDummyFile()
-	defer os.Remove(rssDummyFile.Name())
-
 	os.Args = []string{`rss-create`, `--title`, `test item`, rssDummyFile.Name()}
 	main()
+	printAndRemoveFile(rssDummyFile.Name())
 	// Output:
 	// <?xml version="1.0" encoding="UTF-8"?>
 	// <rss version="2.0">
@@ -30,8 +30,6 @@ func ExampleMain1() {
 // (Almost) exhaustive test of the command line arguments.
 func ExampleMain2() {
 	rssDummyFile := getRSSDummyFile()
-	defer os.Remove(rssDummyFile.Name())
-
 	os.Args = []string{`rss-create`,
 		`--title`, `Venice Film Festival Tries to Quit Sinking`,
 		`--link`, `http://nytimes.com/2004/12/07FEST.html`,
@@ -52,6 +50,7 @@ func ExampleMain2() {
 		`--source-url`, `http://www.tomalak.org/links2.xml`,
 		rssDummyFile.Name()}
 	main()
+	printAndRemoveFile(rssDummyFile.Name())
 	// Output:
 	// <?xml version="1.0" encoding="UTF-8"?>
 	// <rss version="2.0">
@@ -97,4 +96,16 @@ func getRSSDummyFile() *os.File {
 		log.Fatal(err)
 	}
 	return rssDummyFile
+}
+
+func printAndRemoveFile(filename string) {
+	data, err := ioutil.ReadFile(filename)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Print(string(data))
+	err = os.Remove(filename)
+	if err != nil {
+		panic(err)
+	}
 }

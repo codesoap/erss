@@ -14,9 +14,6 @@ import (
 
 var usage = `
 Copy items form one RSS 2.0 file to another, respecting optional filters.
-Note that <target> will remain unmodified; the result will be printed
-to stdout or <outfile>, if given.
-
 <title>, <category> and <guid> are interpreted as regular expressions.
 
 Usage:
@@ -27,7 +24,6 @@ Usage:
                    [--before=<date>]
                    <source>
                    <target>
-                   [<outfile>]
 `
 
 type conf struct {
@@ -38,7 +34,6 @@ type conf struct {
 	Before   string
 	Source   string
 	Target   string
-	Outfile  string
 }
 
 var reTitle, reCategory, reGUID *regexp.Regexp
@@ -71,7 +66,7 @@ func main() {
 		os.Exit(4)
 	}
 	target.Channel.Items = append(target.Channel.Items, items...)
-	if err = erss.PrintOrWriteResult(target, conf.Outfile); err != nil {
+	if err = erss.WriteResult(target, conf.Target); err != nil {
 		fmt.Fprintln(os.Stderr, `Error when rendering:`, err.Error())
 		os.Exit(5)
 	}

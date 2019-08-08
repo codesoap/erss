@@ -1,14 +1,20 @@
 package main
 
-import "os"
+import (
+	"fmt"
+	"io/ioutil"
+	"os"
+)
 
 // Tests basic functionality.
 func ExampleMain1() {
 	os.Args = []string{`rss-create`,
 		`--title`, `test title`,
 		`--link`, `link.com`,
-		`--description`, `special characters: " & ;`}
+		`--description`, `special characters: " & ;`,
+		`main_test.rss`}
 	main()
+	printAndRemoveFile(`main_test.rss`)
 	// Output:
 	// <?xml version="1.0" encoding="UTF-8"?>
 	// <rss version="2.0">
@@ -59,8 +65,9 @@ func ExampleMain2() {
 		`--skipHour`, `4`,
 		`--skipDay`, `Sunday`,
 		`--skipDay`, `Saturday`,
-	}
+		`main_test.rss`}
 	main()
+	printAndRemoveFile(`main_test.rss`)
 	// Output:
 	// <?xml version="1.0" encoding="UTF-8"?>
 	// <rss version="2.0">
@@ -105,4 +112,16 @@ func ExampleMain2() {
 	// 		</skipDays>
 	// 	</channel>
 	// </rss>
+}
+
+func printAndRemoveFile(filename string) {
+	data, err := ioutil.ReadFile(filename)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Print(string(data))
+	err = os.Remove(filename)
+	if err != nil {
+		panic(err)
+	}
 }

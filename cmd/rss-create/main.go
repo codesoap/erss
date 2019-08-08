@@ -54,7 +54,7 @@ Usage:
                )]
                [(--skipHour=<hour>)...]
                [(--skipDay=<day>)...]
-               [<outfile>]
+               <outfile>
 `
 
 type conf struct {
@@ -117,7 +117,7 @@ func main() {
 		os.Exit(3)
 	}
 	rss := rss2.NewRSS(channel)
-	if err = erss.PrintOrWriteResult(rss, conf.Outfile); err != nil {
+	if err = erss.WriteResult(rss, conf.Outfile); err != nil {
 		fmt.Fprintln(os.Stderr, `Error when rendering:`, err.Error())
 		os.Exit(4)
 	}
