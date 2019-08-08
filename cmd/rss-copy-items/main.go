@@ -66,7 +66,7 @@ func main() {
 		os.Exit(4)
 	}
 	target.Channel.Items = append(target.Channel.Items, items...)
-	if err = erss.WriteResult(target, conf.Target); err != nil {
+	if err = erss.WriteRSS(target, conf.Target); err != nil {
 		fmt.Fprintln(os.Stderr, `Error when rendering:`, err.Error())
 		os.Exit(5)
 	}

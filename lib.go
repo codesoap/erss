@@ -22,7 +22,7 @@ func ToCategory(category, categoryDomain string) (c *rss2.Category, err error) {
 	return
 }
 
-func WriteResult(rss *rss2.RSS, outfile_name string) (err error) {
+func WriteRSS(rss *rss2.RSS, outfile_name string) (err error) {
 	rss_bytes, err := xml.MarshalIndent(rss, ``, "\t")
 	if err != nil {
 		return fmt.Errorf(`error when rendering rss: %s`, err.Error())

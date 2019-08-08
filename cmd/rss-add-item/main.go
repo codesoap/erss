@@ -85,7 +85,7 @@ func main() {
 		os.Exit(4)
 	}
 	rss.Channel.Items = append(rss.Channel.Items, item)
-	if err = erss.WriteResult(rss, conf.File); err != nil {
+	if err = erss.WriteRSS(rss, conf.File); err != nil {
 		fmt.Fprintln(os.Stderr, `Error when rendering:`, err.Error())
 		os.Exit(5)
 	}
