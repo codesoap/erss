@@ -38,7 +38,7 @@ func WriteResult(rss *rss2.RSS, outfile_name string) (err error) {
 	return
 }
 
-func GetRSS(filename string) (r *rss2.RSS, err error) {
+func ReadRSS(filename string) (r *rss2.RSS, err error) {
 	var input []byte
 	if input, err = ioutil.ReadFile(filename); err != nil {
 		return

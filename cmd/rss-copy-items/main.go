@@ -60,7 +60,7 @@ func main() {
 		fmt.Fprintln(os.Stderr, `Error when getting the selected items:`, err.Error())
 		os.Exit(3)
 	}
-	target, err := erss.GetRSS(conf.Target)
+	target, err := erss.ReadRSS(conf.Target)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, `Error when reading the target RSS:`, err.Error())
 		os.Exit(4)
@@ -84,7 +84,7 @@ func setRegexps(conf *conf) (err error) {
 }
 
 func getFilteredItems(conf *conf) (itemsFiltered []*rss2.Item, err error) {
-	source, err := erss.GetRSS(conf.Source)
+	source, err := erss.ReadRSS(conf.Source)
 	if err != nil {
 		return nil, fmt.Errorf(`error when reading source rss: %s`, err.Error())
 	}

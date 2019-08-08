@@ -74,7 +74,7 @@ func main() {
 		fmt.Fprintln(os.Stderr, `At least --title or --description must be provided.`)
 		os.Exit(2)
 	}
-	rss, err := erss.GetRSS(conf.File)
+	rss, err := erss.ReadRSS(conf.File)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, `Error when reading the existing RSS:`, err.Error())
 		os.Exit(3)
