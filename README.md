@@ -27,6 +27,9 @@ $            --language 'en-us' fixed_blog.rss
 $ # Now I can copy over the items from my existing blog.
 $ rss-copy-items blog.rss fixed_blog.rss
 $ mv fixed_blog.rss blog.rss
+$ # If the items of your feed have become unordered (e.g. through multiple
+$ # calls of rss-copy-items), you can sort them like this:
+$ rss-sort-by-date blog.rss
 $ # After a while my blog grew and I want to reduce the size of my RSS
 $ # file, to avoid poor performance and problems with some feed
 $ # aggregators. I can simply reduce the amount of items like this:
@@ -44,7 +47,3 @@ $ rss-tail -n 32 blog.rss
    `make all`)
 
 To uninstall erss call `make uninstall`.
-
-# To think about
-- `rss-sort-by-date` (for example to reorder a file after multiple calls
-  of `rss-copy-items`)
